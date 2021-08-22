@@ -8,7 +8,9 @@ import passport from 'passport';
 import session from 'express-session';
 import { v4 as uuid } from 'uuid';
 import { buildContext } from 'graphql-passport';
+import initPassport from './passport/initPassport';
 
+initPassport();
 const app: Express = express();
 
 app.use(express.json());

@@ -16,3 +16,8 @@ export const otpGeneratorUtil = () => {
 
   return genOtp;
 };
+
+export enum loginStrategies {
+  LOCAL = 'LOCAL',
+  GITHUB = 'GITHUB',
+}
