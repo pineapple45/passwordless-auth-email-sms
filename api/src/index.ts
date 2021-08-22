@@ -32,6 +32,11 @@ const apolloServer = new ApolloServer({
   schema: schemaObject,
   context: ({ req, res }: { req: Request; res: Response }) =>
     buildContext({ req, res }),
+  playground: {
+    settings: {
+      'request.credentials': 'include',
+    },
+  },
 });
 
 apolloServer.applyMiddleware({ app: app, cors: false });

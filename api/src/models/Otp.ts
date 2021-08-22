@@ -1,7 +1,7 @@
 import { model, models, Schema, Document } from 'mongoose';
 
 export interface OtpSchemaProps extends Document {
-  otp: number;
+  otp: string;
   user?: string;
   medium: string; // 'phone' or 'email'
   expireAt: string;
@@ -9,7 +9,7 @@ export interface OtpSchemaProps extends Document {
 
 export const OtpSchema = new Schema<OtpSchemaProps>(
   {
-    otp: { type: Number, required: true },
+    otp: { type: String, required: true },
     user: { type: String, required: true, unique: true },
     medium: { type: String, required: true },
     expireAt: {

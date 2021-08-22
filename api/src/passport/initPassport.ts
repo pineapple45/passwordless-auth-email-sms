@@ -9,12 +9,13 @@ const initPassport = () => {
     new GraphQLLocalStrategy(
       async (username: any, password: any, done: any) => {
         let matchingUser = null;
+
         if (validateEmail(username)) {
           const email = username;
-          matchingUser = User.findOne({ email });
+          matchingUser = await User.findOne({ email: email });
           if (!matchingUser) {
             const newUser = new User({
-              username: email,
+              username,
               email: email,
               loginStrategy: loginStrategies.LOCAL,
             });
@@ -23,10 +24,10 @@ const initPassport = () => {
           }
         } else {
           const phone = username;
-          matchingUser = User.findOne({ phone });
+          matchingUser = await User.findOne({ phone: phone });
           if (!matchingUser) {
             const newUser = new User({
-              username: phone,
+              username,
               phone: phone,
               loginStrategy: loginStrategies.LOCAL,
             });
@@ -37,7 +38,7 @@ const initPassport = () => {
 
         const error = matchingUser
           ? null
-          : new AuthenticationError('no mathcing user found');
+          : new AuthenticationError('no matching user');
         done(error, matchingUser);
 
         // {
@@ -52,15 +53,16 @@ const initPassport = () => {
   );
 
   passport.serializeUser((user: any, done) => {
-    console.log('serialising user', user);
+    console.log('serializing user', user);
     done(null, user._id);
   });
 
   passport.deserializeUser(async (id, done) => {
-    console.log('deserialising user', id);
-    const matchingUser = User.findById(id);
+    console.log('deserializing user', id);
+    const matchingUser = await User.findById(id);
     done(null, matchingUser);
   });
+  [];
 };
 
 export default initPassport;

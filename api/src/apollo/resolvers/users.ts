@@ -9,7 +9,7 @@ import { validateEmail, otpGeneratorUtil } from '../../utils/general';
 export const usersResolver: IResolvers = {
   Query: {
     currentUser: (parent, args, context) => {
-      return context.currentUser();
+      return context.getUser();
     },
   },
   Mutation: {

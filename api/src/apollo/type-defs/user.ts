@@ -20,7 +20,7 @@ export const userSchema = makeExecutableSchema({
 
     type Mutation {
       getOtp(emailOrPhone: String!): String!
-      login(otp: Int!): AuthPayload
+      login(otp: String!): AuthPayload
       logout: String!
       updateProfile(
         id: ID!

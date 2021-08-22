@@ -10,11 +10,11 @@ export const otpGeneratorUtil = () => {
   const genOtp = otpGenerator.generate(6, {
     // 567890
     upperCase: false,
-    specialCharacters: false,
+    specialChars: false,
     alphabets: false,
   });
 
-  return genOtp;
+  return genOtp; // 009078 -> 9078
 };
 
 export enum loginStrategies {
