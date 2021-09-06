@@ -1,7 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const Navbar = () => {
+  const router = useRouter();
+
   return (
     <nav className='flex items-center justify-between flex-wrap bg-green-700 p-6'>
       <div className='flex items-center flex-shrink-0 text-white mr-6'>
@@ -33,6 +36,14 @@ const Navbar = () => {
       <div className='w-full block flex-grow lg:flex lg:items-center lg:w-auto'>
         <div className='text-sm lg:flex-grow text-white font-bold'>
           <Link href='/protected-page'>Frameworks</Link>
+        </div>
+        <div>
+          <a
+            className='inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-gray-800 mt-4 lg:mt-0'
+            onClick={() => router.push('/login')}
+          >
+            Login
+          </a>
         </div>
       </div>
     </nav>
