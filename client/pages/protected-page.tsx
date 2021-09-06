@@ -2,6 +2,10 @@ import React from 'react';
 import { initializeApollo } from '../apollo/client';
 import { LIST_FRAMEWORKS_QUERY } from '../apollo/queries';
 import Image from 'next/image';
+import {
+  WithAuthComponent,
+  WithAuthServerSideProps,
+} from '../authentication/WithAuthServerSide';
 
 type FrameworkType = {
   _id: string;
@@ -12,9 +16,10 @@ type FrameworkType = {
 interface FrameworkListProps {
   frameworks: FrameworkType[];
   error: string;
+  user: any;
 }
 
-const ProtectedPage = ({ frameworks, error }: FrameworkListProps) => {
+const ProtectedPage = ({ frameworks, error, user }: FrameworkListProps) => {
   return (
     <div className='bg-green-100 py-14'>
       <h3 className='text-2xl tracking-widest text-green-600 text-center'>
@@ -56,26 +61,29 @@ const ProtectedPage = ({ frameworks, error }: FrameworkListProps) => {
   );
 };
 
-export default ProtectedPage;
+export default WithAuthComponent(ProtectedPage);
 
-export const getServerSideProps = async ({ context }: any) => {
-  const client = initializeApollo();
-  let error = null;
-  let frameworks = { listFrameworks: [] };
+export const getServerSideProps = WithAuthServerSideProps(
+  async ({ context, user }: any) => {
+    // getServerSideProps function for this specific page
+    const client = initializeApollo();
+    let error = null;
+    let frameworks = { listFrameworks: [] };
 
-  try {
-    const { data } = await client.query({
-      query: LIST_FRAMEWORKS_QUERY,
-      fetchPolicy: 'network-only',
-    });
+    try {
+      const { data } = await client.query({
+        query: LIST_FRAMEWORKS_QUERY,
+        fetchPolicy: 'network-only',
+      });
 
-    frameworks = data; // data => { listFrameworks: []}
-  } catch (err: any) {
-    error = err;
-    console.error(err);
+      frameworks = data; // data => { listFrameworks: []}
+    } catch (err: any) {
+      error = err;
+      console.error(err);
+    }
+
+    return {
+      props: { frameworks: frameworks.listFrameworks, error },
+    };
   }
-
-  return {
-    props: { frameworks: frameworks.listFrameworks, error },
-  };
-};
+);
