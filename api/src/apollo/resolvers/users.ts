@@ -5,6 +5,7 @@ import {
 } from 'apollo-server-express';
 import Otp from '../../models/Otp';
 import { validateEmail, otpGeneratorUtil } from '../../utils/general';
+import User from '../../models/User';
 
 export const usersResolver: IResolvers = {
   Query: {
@@ -88,6 +89,41 @@ export const usersResolver: IResolvers = {
       context.req.session = null;
 
       return 'user successfully logged out';
+    },
+    updateProfile: async (_, { id, username, email, phone }, context) => {
+      if (!username && !phone && !email) {
+        throw new UserInputError(
+          'Please update at least one of the 3 feilds: username , email or phone'
+        );
+      }
+
+      try {
+        const existingUser = await User.findById(id);
+
+        if (!existingUser) throw new Error('user not found');
+
+        if (existingUser.username !== username) {
+          existingUser.username = username;
+        }
+        if (existingUser.email !== email) {
+          existingUser.email = email;
+        }
+        if (existingUser.phone !== phone) {
+          existingUser.phone = phone;
+        }
+
+        await existingUser.save();
+        return `user ${id} updated`;
+      } catch (err) {
+        let errMsg;
+        if (err.code == 11000) {
+          errMsg = Object.keys(err.keyValue)[0] + ' already exists'; // phone already exists
+        } else {
+          errMsg = err.message;
+        }
+
+        throw new Error(errMsg);
+      }
     },
   },
 };

@@ -25,3 +25,14 @@ export const LOGOUT_MUTATION = gql`
     logout
   }
 `;
+
+export const UPDATE_PROFILE_MUTATION = gql`
+  mutation updateProfile(
+    $id: ID!
+    $username: String
+    $email: String
+    $phone: String
+  ) {
+    updateProfile(id: $id, username: $username, email: $email, phone: $phone)
+  }
+`;
