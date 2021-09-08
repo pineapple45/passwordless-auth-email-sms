@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { initializeApollo } from '../apollo/client';
 import { LIST_FRAMEWORKS_QUERY } from '../apollo/queries';
 import Image from 'next/image';
@@ -6,6 +6,8 @@ import {
   WithAuthComponent,
   WithAuthServerSideProps,
 } from '../authentication/WithAuthServerSide';
+import useAlert from '../hooks/useAlert';
+import Alert from '../components/Alert';
 
 type FrameworkType = {
   _id: string;
@@ -20,6 +22,17 @@ interface FrameworkListProps {
 }
 
 const ProtectedPage = ({ frameworks, error, user }: FrameworkListProps) => {
+  const { message, setMessage, setShowAlert, showAlert } = useAlert();
+
+  useEffect(() => {
+    if (error) {
+      setMessage({
+        text: error,
+        variant: 'danger',
+      });
+    }
+  }, [error]);
+
   return (
     <div className='bg-green-100 py-14'>
       <h3 className='text-2xl tracking-widest text-green-600 text-center'>
@@ -28,6 +41,14 @@ const ProtectedPage = ({ frameworks, error, user }: FrameworkListProps) => {
       <h1 className='mt-8 text-center text-5xl text-green-600 font-bold'>
         Top Frontend Frameworks
       </h1>
+      {error && (
+        <Alert
+          message={message.text}
+          variant={message.variant}
+          showAlert={showAlert}
+          setShowAlert={setShowAlert}
+        />
+      )}
       <div className='md:flex md:justify-center md:space-x-8 md:px-14'>
         {frameworks.map((framework: FrameworkType) => {
           return (

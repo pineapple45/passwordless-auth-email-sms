@@ -10,6 +10,11 @@ import { v4 as uuid } from 'uuid';
 import { buildContext } from 'graphql-passport';
 import initPassport from './passport/initPassport';
 
+const clientUrl =
+  process.env.NODE_ENV === 'production'
+    ? process.env.CLIENT_URL
+    : 'http://localhost:3000';
+
 initPassport();
 const app: Express = express();
 
@@ -27,6 +32,11 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+const corsOptions = {
+  credentials: true,
+  origin: clientUrl,
+};
+
 // Initialising apollo server
 const apolloServer = new ApolloServer({
   schema: schemaObject,
@@ -39,7 +49,7 @@ const apolloServer = new ApolloServer({
   },
 });
 
-apolloServer.applyMiddleware({ app: app, cors: false });
+apolloServer.applyMiddleware({ app: app, cors: corsOptions });
 
 app.get('/', (req, res) => {
   res.send('<h1>Hello World</h1>');

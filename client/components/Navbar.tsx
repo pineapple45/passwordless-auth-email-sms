@@ -1,13 +1,32 @@
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useQuery, useMutation } from '@apollo/client';
+import { CURRENT_USER_QUERY } from '../apollo/queries';
+import { LOGOUT_MUTATION } from '../apollo/mutations';
+
+const clientUrl = process.env.NEXT_PUBLIC_URL;
 
 const Navbar = () => {
   const router = useRouter();
+  const [logout] = useMutation(LOGOUT_MUTATION);
+  const { data, loading, error } = useQuery(CURRENT_USER_QUERY);
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      window.location.replace(`${clientUrl}`);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <nav className='flex items-center justify-between flex-wrap bg-green-700 p-6'>
-      <div className='flex items-center flex-shrink-0 text-white mr-6'>
+      <div
+        className='flex it  const { data, loading, error } = useQuery(CURRENT_USER_QUERY);
+ems-center flex-shrink-0 text-white mr-6'
+      >
         <svg
           className='fill-current h-8 w-8 mr-2'
           width='54'
@@ -38,12 +57,26 @@ const Navbar = () => {
           <Link href='/protected-page'>Frameworks</Link>
         </div>
         <div>
-          <a
-            className='inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-gray-800 mt-4 lg:mt-0'
-            onClick={() => router.push('/login')}
-          >
-            Login
-          </a>
+          {data && data.currentUser && (
+            <span className='text-white font-bold px-5'>
+              <Link href='/profile'>{data.currentUser.username}</Link>
+            </span>
+          )}
+          {data && data.currentUser ? (
+            <a
+              className='inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-gray-800 mt-4 lg:mt-0'
+              onClick={handleLogout}
+            >
+              Logout
+            </a>
+          ) : (
+            <a
+              className='inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-gray-800 mt-4 lg:mt-0'
+              onClick={() => router.push('/login')}
+            >
+              Login
+            </a>
+          )}
         </div>
       </div>
     </nav>
