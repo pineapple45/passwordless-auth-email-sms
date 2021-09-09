@@ -15,7 +15,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       await logout();
-      window.location.replace(`${clientUrl}`);
+      window.location.replace('http://localhost:3000');
     } catch (err) {
       console.error(err);
     }

@@ -36,7 +36,7 @@ const Alert: React.FC<AlertProps> = ({
       role='alert'
     >
       <span className='block sm:inline'>{message}</span>
-      <span>
+      <span className='absolute top-0 bottom-0 right-0 px-4 py-3'>
         <svg
           className='fill-current h-6 w-6 text-black-500'
           role='button'

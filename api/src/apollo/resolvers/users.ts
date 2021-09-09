@@ -6,6 +6,8 @@ import {
 import Otp from '../../models/Otp';
 import { validateEmail, otpGeneratorUtil } from '../../utils/general';
 import User from '../../models/User';
+import { sendOTPEmail } from '../../utils/nodemailer';
+import { sendOTPSMS } from '../../utils/twilio';
 
 export const usersResolver: IResolvers = {
   Query: {
@@ -37,6 +39,10 @@ export const usersResolver: IResolvers = {
         await newOtp.save();
 
         // send otp to email entered by user (nodemailer)
+        // await sendOTPEmail({
+        //   otp: genOtp,
+        //   toUser: emailOrPhone,
+        // });
 
         return `otp sent to ${emailOrPhone}`;
       } else {
@@ -58,7 +64,6 @@ export const usersResolver: IResolvers = {
           await newOtp.save();
 
           // send sms to phone number entered by user using twilio
-
           return `otp sent to ${phoneNumber}`;
         } catch (err) {
           throw new UserInputError('invalid email or phone input');

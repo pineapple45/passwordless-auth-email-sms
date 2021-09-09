@@ -38,6 +38,7 @@ const otp = () => {
           message={message.text}
           showAlert={showAlert}
           setShowAlert={setShowAlert}
+          variant={message.variant}
         />
       )}
       <div className='p-20 flex justify-center'>

@@ -13,12 +13,18 @@ export const UserSchema = new Schema<UserSchemaProps>(
     email: {
       type: String,
       required: false,
-      unique: true,
+      index: {
+        unique: true,
+        partialFilterExpression: { email: { $type: 'string' } },
+      },
     },
     phone: {
       type: String,
       required: false,
-      unique: true,
+      index: {
+        unique: true,
+        partialFilterExpression: { phone: { $type: 'string' } },
+      },
     },
     loginStrategy: { type: String, required: true },
   },

@@ -53,8 +53,8 @@ export const sendOTPEmail = ({
   let mailsender = sender;
   if (!sender) {
     mailsender = {
-      email: process.env.EMAIL as string,
-      password: process.env.PASSWORD as string,
+      email: process.env.SENDER_EMAIL as string,
+      password: process.env.SENDER_EMAIL_PASSWORD as string,
     };
   }
 

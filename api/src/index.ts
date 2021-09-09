@@ -9,6 +9,7 @@ import session from 'express-session';
 import { v4 as uuid } from 'uuid';
 import { buildContext } from 'graphql-passport';
 import initPassport from './passport/initPassport';
+import MongoStore from 'connect-mongo';
 
 const clientUrl =
   process.env.NODE_ENV === 'production'
@@ -26,6 +27,11 @@ app.use(
     secret: process.env.SECRET as string,
     resave: false,
     saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI as string,
+      autoRemove: 'interval',
+      autoRemoveInterval: 10,
+    }),
   })
 );
 
