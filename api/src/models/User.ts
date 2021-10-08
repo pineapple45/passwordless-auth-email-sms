@@ -27,6 +27,7 @@ export const UserSchema = new Schema<UserSchemaProps>(
       },
     },
     loginStrategy: { type: String, required: true },
+    githubId: { type: String },
   },
   {
     timestamps: true,

@@ -1,8 +1,16 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
 import passport from 'passport';
+import { Strategy as GithubStrategy, Profile } from 'passport-github2';
 import { GraphQLLocalStrategy } from 'graphql-passport';
 import { AuthenticationError } from 'apollo-server-express';
 import User from '../models/User';
 import { validateEmail, loginStrategies } from '../utils/general';
+
+const apiUrl =
+  process.env.NODE_ENV === 'production'
+    ? process.env.API_URL
+    : 'http://localhost:4000';
 
 const initPassport = () => {
   passport.use(
@@ -48,6 +56,60 @@ const initPassport = () => {
         //     phone,
         //     loginStrategy
         // }
+      }
+    )
+  );
+
+  passport.use(
+    new GithubStrategy(
+      {
+        clientID: process.env.GITHUB_CLIENT_ID as string,
+        clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+        callbackURL: `${apiUrl}/auth/github/callback`,
+      },
+      (accessToken: any, refreshToken: any, profile: Profile, done: any) => {
+        process.nextTick(async () => {
+          let user = {};
+
+          try {
+            const matchingUser = await User.findOne({
+              githubId: profile.id,
+            });
+
+            if (!matchingUser) {
+              const newUser = new User({
+                githubId: profile.id,
+                username: profile.username,
+                loginStrategy: loginStrategies.GITHUB,
+              });
+
+              console.log('mathing User found!');
+              const res = await newUser.save();
+
+              user = {
+                ...profile,
+                _id: res._id,
+              };
+            } else {
+              console.log('matching user found!');
+              user = {
+                ...profile,
+                _id: matchingUser._id,
+              };
+            }
+          } catch (err) {
+            let errMsg;
+            if (err.code == 11000) {
+              errMsg = Object.keys(err.KeyValue)[0] + 'already exists';
+            } else {
+              errMsg = err.message;
+            }
+
+            throw new Error(errMsg);
+          }
+
+          return done(null, user);
+        });
       }
     )
   );

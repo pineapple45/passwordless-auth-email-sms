@@ -6,6 +6,7 @@ import useAlert from '../hooks/useAlert';
 import { useMutation } from '@apollo/client';
 import { GET_OTP_MUTATION } from '../apollo/mutations';
 import router from 'next/router';
+import { GithubLoginButton } from 'react-social-login-buttons';
 
 const login = () => {
   const [getOtp, { data, error, loading }] = useMutation(GET_OTP_MUTATION);
@@ -143,6 +144,13 @@ const login = () => {
               </button>
             </div>
           </form>
+          <hr />
+          <a
+            href={`${process.env.NEXT_PUBLIC_API}/auth/github`}
+            target='_parent'
+          >
+            <GithubLoginButton />
+          </a>
         </div>
       </div>
     </>

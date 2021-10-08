@@ -63,7 +63,20 @@ export const usersResolver: IResolvers = {
 
           await newOtp.save();
 
+          console.log('newOtp for sms', newOtp);
+
           // send sms to phone number entered by user using twilio
+          const response = await sendOTPSMS({
+            toUser: phoneNumber,
+            otp: genOtp,
+          });
+
+          if (response.error) {
+            throw new AuthenticationError(
+              `sms could not be sent: ${response.message}`
+            );
+          }
+
           return `otp sent to ${phoneNumber}`;
         } catch (err) {
           throw new UserInputError('invalid email or phone input');

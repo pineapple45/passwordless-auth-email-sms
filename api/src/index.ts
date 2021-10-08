@@ -61,6 +61,25 @@ app.get('/', (req, res) => {
   res.send('<h1>Hello World</h1>');
 });
 
+app.get(
+  '/auth/github',
+  passport.authenticate('github', { scope: ['user:email'] }),
+  (req: Request, res: Response) => {
+    // This request will be redirected to Github for authentication, so this
+    // function will not be called
+  }
+);
+
+app.get(
+  '/auth/github/callback',
+  passport.authenticate('github', {
+    failureRedirect: `${clientUrl}/login`,
+  }),
+  (_, res: Response) => {
+    res.redirect(clientUrl as string);
+  }
+);
+
 const PORT = process.env.NODE_ENV === 'production' ? process.env.PORT : 4000;
 
 mongoose

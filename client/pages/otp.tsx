@@ -53,7 +53,7 @@ const otp = () => {
               </label>
               <Textfeild
                 className='shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker'
-                placeholder='email'
+                placeholder='otp'
                 onChange={otpInputHandler}
                 value={inputValue}
                 args={{ type: 'text', id: 'otp' }}

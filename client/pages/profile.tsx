@@ -81,64 +81,72 @@ const Profile = ({ user }: any) => {
         />
       )}
       <div className='p-20 flex justify-center'>
-        <form className='mb-4' onSubmit={updateProfileHandler}>
+        {user.loginStrategy === 'LOCAL' && (
+          <form className='mb-4' onSubmit={updateProfileHandler}>
+            <div>
+              <label
+                className='block text-grey-darker text-sm font-bold mb-2'
+                htmlFor='username'
+              >
+                USERNAME
+              </label>
+              <Textfeild
+                className='shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker'
+                placeholder='username'
+                name='username'
+                onChange={usernameInputChangeHandler}
+                value={inputValue.username}
+                args={{ type: 'text', id: 'username' }}
+              />
+            </div>
+            <br />
+            <div>
+              <label
+                className='block text-grey-darker text-sm font-bold mb-2'
+                htmlFor='email'
+              >
+                EMAIL
+              </label>
+              <Textfeild
+                className='shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker'
+                placeholder='email'
+                name='email'
+                onChange={emailInputChangeHandler}
+                value={inputValue.email}
+                args={{ type: 'email', id: 'email' }}
+              />
+            </div>
+            <br />
+            <div>
+              <label
+                className='block text-grey-darker text-sm font-bold mb-2'
+                htmlFor='phone'
+              >
+                PHONE
+              </label>
+              <Numberfeild
+                placeholder='phone'
+                name='phone'
+                onChange={phoneInputChangeHandler}
+                value={inputValue.phone}
+              />
+            </div>
+            <div className='flex items-center justify-between mt-5'>
+              <button
+                className=' bg-black border-2 text-white py-2 px-4 rounded'
+                type='submit'
+              >
+                UPDATE PROFILE
+              </button>
+            </div>
+          </form>
+        )}
+        {user.loginStrategy === 'GITHUB' && (
           <div>
-            <label
-              className='block text-grey-darker text-sm font-bold mb-2'
-              htmlFor='username'
-            >
-              USERNAME
-            </label>
-            <Textfeild
-              className='shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker'
-              placeholder='username'
-              name='username'
-              onChange={usernameInputChangeHandler}
-              value={inputValue.username}
-              args={{ type: 'text', id: 'username' }}
-            />
+            <div>{user.username}</div>
+            <div>{user.email}</div>
           </div>
-          <br />
-          <div>
-            <label
-              className='block text-grey-darker text-sm font-bold mb-2'
-              htmlFor='email'
-            >
-              EMAIL
-            </label>
-            <Textfeild
-              className='shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker'
-              placeholder='email'
-              name='email'
-              onChange={emailInputChangeHandler}
-              value={inputValue.email}
-              args={{ type: 'email', id: 'email' }}
-            />
-          </div>
-          <br />
-          <div>
-            <label
-              className='block text-grey-darker text-sm font-bold mb-2'
-              htmlFor='phone'
-            >
-              PHONE
-            </label>
-            <Numberfeild
-              placeholder='phone'
-              name='phone'
-              onChange={phoneInputChangeHandler}
-              value={inputValue.phone}
-            />
-          </div>
-          <div className='flex items-center justify-between mt-5'>
-            <button
-              className=' bg-black border-2 text-white py-2 px-4 rounded'
-              type='submit'
-            >
-              UPDATE PROFILE
-            </button>
-          </div>
-        </form>
+        )}
       </div>
     </>
   );

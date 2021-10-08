@@ -5,7 +5,7 @@ import { useQuery, useMutation } from '@apollo/client';
 import { CURRENT_USER_QUERY } from '../apollo/queries';
 import { LOGOUT_MUTATION } from '../apollo/mutations';
 
-const clientUrl = process.env.NEXT_PUBLIC_URL;
+const clientUrl = process.env.NEXT_PUBLIC_CLIENT_URL;
 
 const Navbar = () => {
   const router = useRouter();
@@ -15,7 +15,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       await logout();
-      window.location.replace('http://localhost:3000');
+      window.location.replace(`${clientUrl}`);
     } catch (err) {
       console.error(err);
     }
