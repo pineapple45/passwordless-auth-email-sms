@@ -4,7 +4,7 @@
 
 **👉 There are multiple branches on the repo. Please note that [main](https://github.com/pineapple45/passwordless-auth-email-sms) branch consists of final code.**
 
-This Code Repository is a complete project to show how passwordless (OTP - One Time Password ) authentication can be setup with Email, SMS and GIthub-OAuth.These playlist videos are a consequense of a project I was working on about 2 months back. I found this project extremely helpful to improve my own knowledge of complex topics in web development such as Authentication and more specifically combining different authentication methods such as passwordless and OAuth.
+This Code Repository is a complete project to show how passwordless (OTP - One Time Password ) authentication can be setup with Email, SMS and Github-OAuth.These playlist videos are a consequense of a project I was working on about 2 months back. I found this project extremely helpful to improve my own knowledge of complex topics in web development such as Authentication and more specifically combining different authentication methods such as passwordless and OAuth.
 
 ### Tech stack
 
