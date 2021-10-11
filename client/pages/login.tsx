@@ -52,7 +52,11 @@ const login = () => {
         ? inputValue.email
         : JSON.stringify(inputValue.phone);
 
-    setStatus(`Sending OTP to ${sendingMedium} ...`);
+    setStatus(
+      `Sending OTP to ${
+        inputValue.email ? inputValue.email : inputValue.phone.value
+      } ...`
+    );
 
     if (inputValue.email === '' && inputValue.phone.value === '') {
       setShowAlert(true);

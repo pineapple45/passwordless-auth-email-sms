@@ -39,10 +39,10 @@ export const usersResolver: IResolvers = {
         await newOtp.save();
 
         // send otp to email entered by user (nodemailer)
-        // await sendOTPEmail({
-        //   otp: genOtp,
-        //   toUser: emailOrPhone,
-        // });
+        await sendOTPEmail({
+          otp: genOtp,
+          toUser: emailOrPhone,
+        });
 
         return `otp sent to ${emailOrPhone}`;
       } else {
